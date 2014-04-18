@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en" id="ng-app" ng-app="artbookApp">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Artbook</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" media="screen"/>
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
+    <script type="text/javascript" src="js/angular/controllers/controllers.js"></script>
+    <script type="text/javascript" src="js/products/ng-infinite-scroll.min.js"></script>
+    <script type="text/javascript" src="js/jquery.superfish.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.js"></script>
+    <script type="text/javascript" src="js/jquery.scripts.js"></script>
+</head>
+
+
+<body ng-controller="ArtbookContactCtrl">
+<div id="wrap">
+    <div class="top_corner"></div>
+    <div id="main_container">
+    
+        <div id="header">
+            <div id="logo"><a href="index.html"><img src="images/logo.gif" alt="" title="" border="0"/></a></div>
+            <div id="languageBar" ng-controller="LanguageCtrl">
+                <a href="" ng-click="onLanguageChange('RO')"><img src="images/roflag.png"></a>
+                <a href="" ng-click="onLanguageChange('EN')"><img src="images/enflag.png"></a>
+            </div>
+            <nav id="main_nav">
+                <div id="menu">
+                    <ul>
+                        <li ng-repeat="menuLink in menuLinks">
+                            <a ng-class="{'current': menuLink.isCurrent}" ng-href="{{menuLink.URL}}"
+                               ng-bind="menuLink.Name"></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        
+        
+        <div class="center_content_pages">
+        
+              <div class="financial-application-form">
+             <h2>Contact Us</h2>
+             
+             <p>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+             </p>
+             
+                <div class="form">
+                    <div class="form_row">
+                    <label>Your name:</label>
+                    <input type="text" name="" class="main_input" />
+                    </div>
+                    
+                    <div class="form_row">
+                    <label>Your email:</label>
+                    <input type="text" name="" class="main_input" />
+                    </div> 
+                    
+                    <div class="form_row">
+                    <label>Your phone:</label>
+                    <input type="text" name="" class="main_input" />
+                    </div> 
+                    
+                    <div class="form_row">
+                    <label>Website:</label>
+                    <input type="text" name="" class="main_input" />
+                    </div>  
+                      
+                    <div class="form_row">
+                    <label>Your adress:</label>
+                    <textarea class="main_textarea"></textarea>
+                    </div> 
+                    
+                        
+                    <div class="form_row">
+                     <input type="submit" name="" class="submit" value="Sign up" />
+                    </div>
+                
+                </div>
+
+             </div>
+            
+             <div class="testimonials">
+                    <h2>Stories and Testimonials </h2>
+                    <p>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </p>
+                    
+                    <div class="testbox">
+                    <h4>Stories:  </h4>
+                    <p>
+                    Sed do eiusmod tempor incididunt
+                    </p>
+                    </div>
+                    
+                    <div class="testbox">
+                    <h4>It eiusmod tempor incididunt</h4>
+                    <p>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </p>
+                    </div>             
+                    <div class="testbox">
+                    <h4>It consectetur adipisicing elit</h4>
+                    <p>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </p>
+                    </div>               
+                    
+             </div>
+        
+        
+        
+   
+        
+        <div class="clear"></div>
+        </div>
+
+    <div ng-include="'views/footer.html'"></div>
+    </div>
+</div>
+</body>
+</html>

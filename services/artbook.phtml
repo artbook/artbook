@@ -1,0 +1,49 @@
+<?php
+    /** @var $f3 - defines the framework global variable */
+    /** Start the F3 setup */
+    $f3=require('lib/base.php');
+    $f3->config('config/globals.cfg');
+    $f3->config('config/routes.cfg');
+    $f3->config('config/maps.cfg');
+    $f3->set('LOCALES','dict/');
+    $f3->set('AUTOLOAD','controllers/');
+    $f3->set('DEBUG',3);
+    /** END F3 setup */
+
+    /** Database Setup */
+    $db=new DB\SQL(
+        'mysql:host='.$f3->get('DB_HOST').';port='.$f3->get('DB_PORT').';dbname='.$f3->get('DB_NAME'),
+        $f3->get('DB_USER'),
+        $f3->get('DB_PASS')
+    );
+    $f3->set('DB', $db);
+    /** END Database Setup */
+
+    /** General Page Routes */
+        $f3->route('GET /languageCommon/@page [ajax]'            ,  'ArtbookMainPageServices::retreiveLanguageCommonJSON');
+        $f3->route('POST /sendEmail/@emailType [ajax]'            ,  'ArtbookGenericServices::sendEmail');
+    /** End General Page Routes */
+
+    /** Main Page Routes */
+        $f3->route('GET /menuLinks/@page [ajax]'                 ,  'ArtbookMainPageServices::retreiveMenuLinksJSON');
+        $f3->route('GET /changeLanguage/@language [ajax]'        ,  'ArtbookMainPageServices::performChangeLanguage');
+        $f3->route('GET /banners [ajax]'                         ,  'ArtbookMainPageServices::retreiveBannersJSON');
+        $f3->route('GET /targets [ajax]'                         ,  'ArtbookMainPageServices::retreiveTargetsJSON');
+    /** End Main Page Routes */
+
+    /** Products Page Routes */
+        //GET
+        $f3->route('GET /productsMenu [ajax]'                                 ,  'ArtbookProductsServices::retreiveProductsMenuJSON');
+        $f3->route('GET /products/@category/@subcategory/@offset [ajax]'      ,  'ArtbookProductsServices::retreiveProductsInCategory');
+        $f3->route('GET /countProducts/@category/@subcategory [ajax]'         ,  'ArtbookProductsServices::retreiveProductsPagesInCategory');
+        $f3->route('GET /productDetails/@productId [ajax]'                    ,  'ArtbookProductsServices::retreiveProductDetailsById');
+        $f3->route('GET /productRatingsPages/@productId [ajax]'               ,  'ArtbookProductsServices::retreiveProductRatingsPages');
+        $f3->route('GET /productRatings/@productId/@offset [ajax]'            ,  'ArtbookProductsServices::retreiveProductRatingsById');
+
+        //POST
+        $f3->route('POST /rateProduct/@productId/@rateValue [ajax]'           ,  'ArtbookProductsServices::rateProduct');
+        $f3->route('POST /checkout [ajax]'                                    ,  'ArtbookProductsServices::checkout');
+    /** End Products Page Routes */
+    $f3->run();
+
+?>

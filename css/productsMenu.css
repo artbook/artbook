@@ -1,0 +1,99 @@
+/* -----------------------------------------------------------------------------*/
+/* 6.LEFT NAV CLASSES
+/* -----------------------------------------------------------------------------*/
+#left_nav {
+    margin: 0px;
+    float: left;
+    font-family: Tahoma,Arial,Verdana,Helvetica,sans-serif !important;
+}
+
+#left_nav img {
+    margin: 5px;
+    display: inline;
+    float: left;
+}
+
+#left_nav p {
+    padding: 7px 5px 3px 1px;
+    display: block;
+    font-size: 11px;
+}
+
+#left_nav a {
+    text-decoration: none;
+    color: #333333;
+}
+
+#left_nav a:hover {
+    color: #333;
+    text-decoration: underline;
+}
+
+#left_nav input {
+    margin: 4px 2px 6px -18px;
+    display: inline;
+    float: left;
+}
+
+#left_nav .label {
+    clear: left;
+    float: none;
+    position: relative;
+    color: #59677d;
+    padding: 1px 0px 0px 0px;
+}
+
+#left_nav h2 {
+    line-height: 12px;
+    margin-right: 0px;
+    padding-bottom: 5px;
+}
+
+
+#left_nav .left_nav_open, #left_nav .left_nav_close {
+    margin: 0;
+    padding: 10px 0px 10px 35px;
+    color: #404040;
+    width: 140px !important;
+    font-size: 1em;
+    font-weight: bold;
+    display: block;
+    border-top: 1px solid #ccc;
+    background: url('../images/icons/menu/nav_arrow_open.gif') 17px center
+    no-repeat;
+}
+
+#left_nav .left_nav_close {
+    background: url('../images/icons/menu/nav_arrow.gif') 19px center no-repeat;
+}
+
+a.facet_title {
+    color: #000000 !important;
+    font-weight: bold;
+}
+
+.toggle_open {
+    display: block;
+}
+
+.toggle_close {
+    display: none;
+}
+
+.togglePaddBtm {
+    padding-bottom: 20px;
+}
+
+.navlistCls_s {
+    line-height: 20px;
+    list-style: none;
+    font-size: 1em;
+    padding: 0 0 0 50px;
+}
+
+.navlistCls_t {
+    line-height: 25px;
+    list-style: none;
+    font-size: 1em;
+    padding: 5px 0 5px 20px;
+}

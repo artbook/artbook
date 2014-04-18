@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en" id="ng-app" ng-app="artbookApp">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Artbook</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" media="screen"/>
+    <link type="text/css" href="/css/productsMenu.css" rel="stylesheet">
+    <link type="text/css" href="/css/productsListAll.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/cart.css"/>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
+    <script type="text/javascript" src="js/products/ng-infinite-scroll.min.js"></script>
+    <script type="text/javascript" src="js/angular/controllers/controllers.js"></script>
+    <script type="text/javascript" src="js/products/productsMenu.js"></script>
+
+
+    <script type="text/javascript" src="js/jquery.superfish.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.js"></script>
+</head>
+
+<body ng-controller="ArtbookProductsCtrl">
+<div id="wrap">
+<div class="top_corner"></div>
+<div id="main_container">
+
+<div id="header">
+    <div id="logo"><a href="index.html"><img src="images/logo.gif" alt="" title="" border="0"/></a></div>
+    <div id="languageBar" ng-controller="LanguageCtrl">
+        <a href="" ng-click="onLanguageChange('RO')"><img src="images/roflag.png"></a>
+        <a href="" ng-click="onLanguageChange('EN')"><img src="images/enflag.png"></a>
+    </div>
+    <nav id="main_nav">
+        <div id="menu">
+            <ul>
+                <li ng-repeat="menuLink in menuLinks">
+                    <a ng-class="{'current': menuLink.isCurrent}" ng-href="{{menuLink.URL}}"
+                       ng-bind="menuLink.Name"></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<div class="center_content_pages">
+<div class="left_block_menu">
+    <h2 ng-bind="dictionary[0].shopby"></h2>
+    <div id="left_nav">
+        <div ng-repeat="category in categories">
+                        <span id="category{{$index}}" class="{{$index==0 | iif : 'left_nav_open' : 'left_nav_close'}}"
+                              ng-click="filterCategory(category.id, $index)">
+                            <a href="" class="facet_title" ng-bind="category.name"></a>
+                        </span>
+            <div class="{{$index==0 | iif : 'toggle_open togglePaddBtm' : 'toggle_close togglePaddBtm'}}" id="subcategory{{$index}}">
+                <ul class="navlistCls_s">
+                    <li ng-repeat="subcategory in category.subcategories">
+                        <a href="" ng-click="filterSubCategory(category.id, subcategory.id)">
+                            {{subcategory.name}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="right_block_for_menu">
+<section>
+<div id="content">
+<div class="container">
+<div class="content-indent">
+
+<div class="orderby-displaynumber">
+    <div class="width90">
+
+
+        <div id="sortProductsSection" class="orderlistcontainer">
+            <div id="activeSortCriteria" class="activeOrder">
+                <a title="Alphabetical">Alphabetical</a>
+            </div>
+            <div style="display: none;" class="orderlist">
+                <div><a title="Alphabetical" id="alphabeticSort"
+                        ng-click="onProductsSort('name', 'alphabeticSort')">Alphabetical</a>
+                </div>
+                <div><a title="Price" id="priceSort"
+                        ng-click="onProductsSort('price', 'priceSort')">Price</a>
+                </div>
+                <div><a title="Rating" id="ratingSort"
+                        ng-click="onProductsSort('rating', 'ratingSort')">Rating</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="orderlistcontainer">
+            <div id="productPagesActiveContainer" class="activeOrder">
+                   <a id="productPagesActive"></a>
+            </div>
+            <div style="display: none;" class="orderlist">
+                <div ng-repeat="page in productPages">
+                    <a title="{{page.name}}" id="order{{page.id}}" ng-click="changePage(page.name, page.id)" ng-bind="page.id!='all' | iif : (dictionary[0].page +'  '+ page.name) :  dictionary[0].allResults "></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="searchbox">
+                <div style="width:40px; float:left"><span ng-bind="dictionary[0].search"></span></div>
+                <input class="inputbox" id="globalSearch" ng-model="query">
+        </div>
+
+        <div id="shoppingCartContent">
+            <div id="shoppingCart">
+                <div class="cartInfo"><span class="simpleCart_quantity"></span> items</div>
+                <div id="cartPopover" style="display: none;">
+                    <div class="simpleCart_items">
+                        <div>
+                            <div class="headerRow">
+                                <div class="item-custom"></div>
+                                <div class="item-name"></div>
+                                <div class="item-total"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix" id="cartData">
+                        <div class="left"><strong>Items: </strong><span class="simpleCart_quantity">0</span></div>
+                        <div class="right"><strong>Total: </strong><span class="simpleCart_total">$0.00</span></div>
+                    </div>
+                    <div class="clearfix" id="popoverButtons">
+                        <a class="simpleCart_checkout hudbtn primary right" href="">Checkout</a>
+                        <a style="dispay:none" id="angularCheckout" href=""></a>
+                        <a style="dispay:none" ng-click="checkout()" id="angularPerformCheckout" href=""></a>
+                        <div id="checkOutPopup" class="popup">
+                            <span class="button b-close"><span>X</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+<div style="display: block;">
+<div id="tabs" class="tabs-position ui-tabs ui-widget ui-widget-content ui-corner-all">
+<ul class="tabs ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+    <li class="first ui-state-default ui-corner-top ui-tabs-selected ui-state-active" id="tabs_1"><a class="tab">
+        &nbsp;</a></li>
+    <li class="second ui-state-default ui-corner-top" id="tabs_2"><a class="tab">&nbsp;</a></li>
+    <li class="three ui-state-default ui-corner-top" id="tabs_3"><a class="tab">&nbsp;</a></li>
+</ul>
+
+<div style="visibility: visible;" class="tab_container">
+
+<div id="tabs-1" class="tab_content ui-tabs-panel ui-widget-content ui-corner-bottom">
+    <div id="product_list">
+        <div class="browse-view">
+            <div class="row odd" ng-repeat="product in products | filter:query | orderBy:orderProp">
+                <div class="product1 floatleft width100 simpleCart_shelfItem">
+                    <span style="display:none" class="item_price">{{product.price}}</span>
+                    <span style="display:none" class="item_name">{{product.name}}</span>
+                    <span style="display:none" class="item_pid">{{product.id}}</span>
+                    <div class="spacer">
+                        <div class="floatright col-2">
+                            <div class="product-price marginbottom12" id="productPrice11">
+                                <div class="PricesalesPrice" style="display : block;">
+                                    <span class="PricesalesPrice">{{product.price}} RON.</span>
+                                </div>
+                                <div ng-class="{'hide': product.originalPrice == 0}" >
+                                    <span  ng-class="{'PricepriceWithoutTax': product.originalPrice > 0}">{{product.originalPrice}}</span>
+                                </div>
+                            </div>
+                            <div class="addtocart-area">
+                                <form method="post" class="product" action="/product/{{product.id}}" id="addtocartproduct11">
+                                    <div class="addtocart-bar">
+                                        <div class="quantity_box">{{dictionary[0].quantityLabel}} </div>
+                                                    <span class="quantity-box">
+                                                    <input id="quantityTabOne{{product.id}}" class="quantity-input" name="quantity[]" value="1" type="text">
+                                                    </span>
+                                                    <span class="quantity-controls">
+                                                    <input class="quantity-controls quantity-plus" title='+1' type="button" ng-click="increaseProductQuantity(product.id,'TabOne')">
+                                                    <input class="quantity-controls quantity-minus" title='-1' type="button" ng-click="decreaseProductQuantity(product.id,'TabOne')">
+                                                    </span>
+                                        <div class="clear"></div>
+                                                    <span class="addtocart-button">
+                                                    <input style="display:none;" id="addToCartTabOne{{product.id}}" name="" class="item_add addtocart-button cart-click" value="{{dictionary[0].addToCartLabel}}" title="{{dictionary[0].addToCartLabel}}" type="button">
+                                                    <input name="" class="addtocart-button cart-click" value="{{dictionary[0].addToCartLabel}}" title="{{dictionary[0].addToCartLabel}}" type="button" ng-click="addToCart(product.id,'TabOne')">
+                                                    </span>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="floatleft col-1">
+                            <div class="browseProductImageContainer">
+                                <a class="modal" href="/productDetails.html?{{product.name}}/{{product.id}}">
+                                    <img ng-src="{{product.image}}" class="browseProductImage" title="{{product.name}}" border="0"></a> </div>
+                            <div class="padding-stock">
+                                <span class="stock-level">{{dictionary[0].stockLabel}}</span>
+                                <span class="{{product.stockLevel}} vmicon"></span>
+                            </div>
+                        </div>
+                        <div class="floatleft col-3">
+                            <div class="title-indent">
+                                <h2><a href="/productDetails.html?{{product.name}}/{{product.id}}">{{product.name}}</a></h2>
+                                <p>{{product.description}}
+                                </p>
+                                    <div class="rating">
+                                        <span class="vote">
+                                        <span title="" class="vmicon ratingbox" style="display:inline-block;">
+                                        <span class="stars-orange" ng-style="product.ratingStyle" style="{{product.ratingStyle}}">
+                                        </span>
+                                        </span>
+                                        </span>
+                                    </div>
+                                    <div class="detal">
+                                        <a href="/productDetails.html?{{product.name}}/{{product.id}}" title="{{product.name}}" class="product-details">{{dictionary[0].productDetailsLabel}}</a>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="horizontal-separator2"></div>
+        </div>
+    </div>
+</div>
+
+<div id="tabs-2" class="tab_content ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs-hide">
+    <div id="product_list2">
+        <div class="browse-view">
+            <div class="row second" ng-repeat="productSet in products2view">
+                <div class="product1 floatleft odd vertical-separator simpleCart_shelfItem" ng-repeat="product in productSet | filter:query | orderBy:orderProp">
+                    <span style="display:none" class="item_price">{{product.price}}</span>
+                    <span style="display:none" class="item_name">{{product.name}}</span>
+                    <div style="height: 211px;" class="spacer column">
+                        <div class="floatleft col-1">
+                            <div class="browseProductImageContainer">
+                                <a title="product07" class="modal" href="/productDetails.html?{{product.name}}/{{product.id}}">
+                                <img ng-src="{{product.image}}" class="browseProductImage" title="{{product.name}}" border="0"></a>
+                            </div>
+                            <div class="padding-stock">
+                                <span class="stock-level">{{dictionary[0].stockLabel}}</span>
+                                <span class="vmicon {{product.stockLevel}}"></span>
+                            </div>
+                        </div>
+                        <div class="floatright col-2">
+                            <div class="title-indent">
+                                <h2><a href="/productDetails.html?{{product.name}}/{{product.id}}">{{product.name}}</a></h2>
+                                <div class="rating">
+                                            <span class="vote">
+                                                <span title="" class="vmicon ratingbox" style="display:inline-block;">
+                                                    <span class="stars-orange" ng-style="{{product.rating}}" style="{{product.ratingStyle}}"></span>
+                                                </span>
+                                            </span>
+                                </div>
+                            </div>
+                            <div class="product-price marginbottom12">
+                                    <div class="PricesalesPrice" style="display : block;">
+                                        <span class="PricesalesPrice">{{product.price}} RON.</span>
+                                    </div>
+                                    <div ng-class="{'hide': product.originalPrice == 0}" >
+                                        <span  ng-class="{'PricepriceWithoutTax': product.originalPrice > 0}">{{product.originalPrice}}</span>
+                                    </div>
+                            </div>
+                            <div class="addtocart-area">
+                                <form method="post" class="product" action="index.php" id="addtocartproduct7">
+                                    <div class="addtocart-bar">
+                                        <div class="quantity_box">{{dictionary[0].quantityLabel}}</div>
+                                            <span class="quantity-box">
+                                                <input id="quantityTabTwo{{product.id}}" class="quantity-input" name="quantity[]" value="1" type="text">
+                                            </span>
+                                            <span class="quantity-controls">
+                                                <input class="quantity-controls quantity-plus" type="button" ng-click="increaseProductQuantity(product.id,'TabTwo')">
+                                                <input class="quantity-controls quantity-minus" type="button" ng-click="decreaseProductQuantity(product.id,'TabTwo')">
+                                            </span>
+                                            <div class="clear"></div>
+                                            <span class="addtocart-button">
+                                            <input style="display:none;" id="addToCartTabTwo{{product.id}}" name="" class="item_add addtocart-button cart-click" value="{{dictionary[0].addToCartLabel}}" title="{{dictionary[0].addToCartLabel}}" type="button">
+                                            <input name="" class="addtocart-button cart-click" value="{{dictionary[0].addToCartLabel}}" title="{{dictionary[0].addToCartLabel}}" type="button" ng-click="addToCart(product.id,'TabTwo')">
+                                            </span>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="horizontal-separator2"></div>
+        </div>
+    </div>
+</div>
+
+<div id="tabs-3" class="tab_content ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs-hide">
+    <div id="product_list3">
+        <div class="browse-view">
+            <div class="row odd" ng-repeat="productSet in products3view">
+                <div class="product1 floatleft odd vertical-separator simpleCart_shelfItem" ng-repeat="product in productSet | filter:query | orderBy:orderProp">
+                    <span style="display:none" class="item_price">{{product.price}}</span>
+                    <span style="display:none" class="item_name">{{product.name}}</span>
+                    <div style="height: 345px;" class="spacer column2">
+                        <div class="col-1">
+                            <div class="browseProductImageContainer">
+                                <a title="product07" class="modal" href="/product/{{product.id}}">
+                                    <img ng-src="{{product.image}}" class="browseProductImage" title="{{product.name}}" border="0"></a>
+                            </div>
+                            <div class="rating">
+                                <span class="vote">
+                                <span title="" class="vmicon ratingbox" style="display:inline-block;">
+                                    <span class="stars-orange" ng-style="{{product.rating}}" style="{{product.ratingStyle}}">
+                                    </span>
+                                </span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="title-indent">
+                                <h2><a href="/productDetails.html?{{product.name}}/{{product.id}}">{{product.name}}</a></h2>
+                                <div class="product-price marginbottom12">
+                                    <div class="PricesalesPrice" style="display : block;">
+                                        <span class="PricesalesPrice">{{product.price}} RON.</span>
+                                    </div>
+                                    <div ng-class="{'hide': product.originalPrice == 0}" >
+                                        <span  ng-class="{'PricepriceWithoutTax': product.originalPrice > 0}">{{product.originalPrice}}</span>
+                                    </div>
+                                </div>
+                                <div class="addtocart-area">
+                                    <form method="post" class="product" action="index.php">
+                                        <div class="addtocart-bar">
+                                            <div class="quantity_box">Quantity: </div>
+                                                    <span class="quantity-box">
+                                                    <input id="quantityTabThree{{product.id}}" class="quantity-input" name="quantity[]" value="1" type="text">
+                                                    </span>
+                                                    <span class="quantity-controls">
+                                                    <input class="quantity-controls quantity-plus" type="button" ng-click="increaseProductQuantity(product.id,'TabThree')">
+                                                    <input class="quantity-controls quantity-minus" type="button" ng-click="decreaseProductQuantity(product.id,'TabThree')">
+                                                    </span>
+                                                    <div class="clear"></div>
+                                                    <span class="addtocart-button">
+                                                    <input style="display:none;" id="addToCartTabThree{{product.id}}" name="" class="item_add addtocart-button cart-click" value="{{dictionary[0].addToCartLabel}}" title="{{dictionary[0].addToCartLabel}}" type="button">
+                                                    <input name="" class="addtocart-button cart-click" value="{{dictionary[0].addToCartLabel}}" title="{{dictionary[0].addToCartLabel}}" type="button" ng-click="addToCart(product.id,'TabThree')">
+                                                    </span>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="horizontal-separator2"></div>
+        </div>
+    </div>
+</div>
+
+
+<div id="bottom-pagination"></div>
+</div>
+
+</div> <!-- For the div id=Tabs-->
+</div>
+</div>
+</div>
+</div>
+</section>
+
+</div>
+
+<div ng-include="'views/footer.html'"></div>
+</div>
+</div>
+
+
+<script type="text/javascript" src="js/products/simpleCart.min.js"></script>
+<script type="text/javascript" src="js/products/jquery.jqzoom-core-pack.js"></script>
+<script type="text/javascript" src="js/products/jquery.raty.min.js"></script>
+<script src="js/products/main.js" defer=""></script>
+</div> <!-- For div id="wrap"-->
+</body>
+</html>

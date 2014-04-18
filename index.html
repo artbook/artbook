@@ -1,0 +1,138 @@
+<!doctype html>
+<html id="ng-app" ng-app="artbookApp">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Artbook</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="css/mainshowcase.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
+    <script type="text/javascript" src="js/products/ng-infinite-scroll.min.js"></script>
+    <script type="text/javascript" src="js/angular/controllers/controllers.js"></script>
+    <script type="text/javascript" src="js/jquery.superfish.js"></script>
+    <script type="text/javascript" src="js/jquery.jcarousel.pack.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.js"></script>
+    <script type="text/javascript" src="js/jquery.scripts.js"></script>
+</head>
+
+<body ng-controller="ArtbookHomeCtrl">
+<div id="wrap">
+<div class="top_corner"></div>
+<div id="main_container">
+
+<div id="header">
+    <div id="logo"><a href="index.html"><img src="images/logo.gif" alt="" title="" border="0"/></a></div>
+    <div id="languageBar" ng-controller="LanguageCtrl">
+        <a href="" ng-click="onLanguageChange('RO')"><img src="images/roflag.png"></a>
+        <a href="" ng-click="onLanguageChange('EN')"><img src="images/enflag.png"></a>
+    </div>
+    <nav id="main_nav">
+        <div id="menu">
+            <ul>
+                <li ng-repeat="menuLink in menuLinks">
+                    <a ng-class="{'current': menuLink.isCurrent}" href="{{menuLink.URL}}"
+                       title="{{menuLink.Title}}">{{menuLink.Name}}</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+<div class="middle_banner">
+    <div class="featured_slider">
+        <!-- begin: sliding featured banner -->
+        <div id="featured_border" class="jcarousel-container">
+            <div id="featured_wrapper" class="jcarousel-clip">
+                <ul id="featured_images" class="jcarousel-list">
+                    <li><img src="images/banners/bannerImg1.jpg" width="965" height="280" alt=""/></li>
+                    <li><img src="images/banners/bannerImg2.jpg" width="965" height="280" alt=""/></li>
+                    <li><img src="images/banners/bannerImg3.jpg" width="965" height="280" alt=""/></li>
+                    <li><img src="images/banners/bannerImg4.jpg" width="965" height="280" alt=""/></li>
+                </ul>
+            </div>
+            <div id="featured_positioner_desc" class="jcarousel-container">
+                <div id="featured_wrapper_desc" class="jcarousel-clip">
+                    <ul id="featured_desc" class="jcarousel-list">
+                        <li>
+                            <div><p>{{banners[0].description}}</p></div>
+                        </li>
+                        <li>
+                            <div><p>{{banners[1].description}}</p></div>
+                        </li>
+                        <li>
+                            <div><p>{{banners[2].description}}</p></div>
+                        </li>
+                        <li>
+                            <div><p>{{banners[3].description}}</p></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!---------------------------------end of middle banner-------------------------------->
+
+
+<div class="center_content">
+<div id="categs" class="personas"  ng-repeat="target in targets">
+    <div class="pod">
+	<span class="podContent targetWidget">
+                    <img ng-src="{{target.image}}" alt="" title="" ng-class="{'home_section_icon': target.isVisible, 'scalableImage' : !target.isVisible}" border="0">
+
+                <div class="isVisible" ng-show="target.isVisible">
+                    <h2 class="targetWidget_title">{{target.title}}</h2>
+                    <div class="targetWidget_subtitle"><p>{{target.shortDescription}}</p></div>
+                    <p>
+                        {{target.contents}}
+                    </p>
+                    <div class="clear"></div>
+                </div>
+
+        <span class="podDescription">
+            <span class="podDescriptionContent">
+                <span class="podDescriptionContentTitle squishyFont">{{target.tooltipTitle}}</span>
+                    {{target.tooltipDesc}}
+                    <div class="podMultiLinks">
+                        <a ng-href="{{target.tooltipUrl}}">{{target.tooltipUrlLabel}}</a>
+                    </div>
+            </span>
+        </span>
+    </span>
+    </div>
+</div>
+
+    <div class="clear"></div>
+
+<div class="right_block_wide" style="display:none">
+    <h2>Latest Projects</h2>
+</div>
+
+<div class="left_block_menu" style="display:none">
+    <h2>Newsletter</h2>
+
+    <p>
+        If you would like to
+    </p>
+
+    <form id="newsletter">
+        <input type="text" name="" class="newsletter_input"/>
+        <input type="submit" name="" class="newsletter_submit" value="Sign up"/>
+    </form>
+
+</div>
+
+
+
+    <div class="clear"></div>
+</div>
+
+    <div ng-include="'views/footer.html'"></div>
+</div>
+
+
+</div>
+</body>
+</html>

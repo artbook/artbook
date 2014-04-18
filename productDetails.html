@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en" id="ng-app" ng-app="artbookApp">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Artbook</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" media="screen"/>
+    <link type="text/css" href="/css/productsMenu.css" rel="stylesheet"/>
+    <link type="text/css" href="/css/productsListAll.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/cart.css"/>
+    <link rel="stylesheet" href="/css/productThumbs.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
+    <script type="text/javascript" src="js/angular/controllers/controllers.js"></script>
+    <script type="text/javascript" src="js/products/productsMenu.js"></script>
+
+    <script type="text/javascript" src="js/jquery.superfish.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.js"></script>
+
+    <script>(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&status=0";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+</head>
+
+<body ng-controller="ArtbookProductDetailsCtrl">
+<div id="wrap">
+<div class="top_corner"></div>
+<div id="main_container">
+
+<div id="header">
+    <div id="logo"><a href="index.html"><img src="images/logo.gif" alt="" title="" border="0"/></a></div>
+    <div id="languageBar" ng-controller="LanguageCtrl">
+        <a href="" ng-click="onLanguageChange('RO')"><img src="images/roflag.png"></a>
+        <a href="" ng-click="onLanguageChange('EN')"><img src="images/enflag.png"></a>
+    </div>
+    <nav id="main_nav">
+        <div id="menu">
+            <ul>
+                <li ng-repeat="menuLink in menuLinks">
+                    <a ng-class="{'current': menuLink.isCurrent}" ng-href="{{menuLink.URL}}"
+                       ng-bind="menuLink.Name"></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<div class="center_content_pages">
+
+    <div id="theCart" style="padding-bottom:20px;">
+
+        <div id="shoppingCartContent">
+            <div id="shoppingCart">
+                <div class="cartInfo"><span class="simpleCart_quantity"></span> items</div>
+                <div id="cartPopover" class="cartPopover" style="display: none;">
+                    <div class="simpleCart_items">
+                        <div>
+                            <div class="headerRow">
+                                <div class="item-custom"></div>
+                                <div class="item-name"></div>
+                                <div class="item-total"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix" id="cartData">
+                        <div class="left"><strong>Items: </strong><span class="simpleCart_quantity"></span></div>
+                        <div class="right"><strong>Total: </strong><span class="simpleCart_total"></span></div>
+                    </div>
+                    <div class="clearfix" id="popoverButtons">
+                        <a class="simpleCart_checkout hudbtn primary right" href="">Checkout</a>
+                        <a style="dispay:none" id="angularCheckout" href=""></a>
+                        <a style="dispay:none" ng-click="checkout()" id="angularPerformCheckout" href=""></a>
+                        <div id="checkOutPopup" class="popup">
+                            <span class="button b-close"><span>X</span></span>
+
+                            <h2><img src="images/productsList/checkout.png">Checkout:</h2>
+                            <div id="checkOutPopupContent"></div>
+                            <div class="clear"></div>
+                            <form id="checkoutForm" data-validate="parsley">
+                                <div class="form">
+                                    <div class="form_row">
+                                        <label ng-bind="dictionary[0].yourName"></label>
+                                        <input type="text" id="cName" data-required="true" name="name" class="main_input" />
+                                    </div>
+
+                                    <div class="form_row">
+                                        <label ng-bind="dictionary[0].yourEmail"></label>
+                                        <input type="email" id="cEmail" data-required="true" name="email" class="main_input"/>
+                                    </div>
+
+                                    <div class="form_row">
+                                        <label ng-bind="dictionary[0].yourPhone"></label>
+                                        <input type="text" id="cPhone" data-required="true" name="phone" class="main_input" />
+                                    </div>
+
+                                    <div class="form_row">
+                                        <label ng-bind="dictionary[0].conditionsLabel"></label>
+                                        <p ng-bind="dictionary[0].checkoutConditions"></p>
+                                    </div>
+
+                                    <div class="form_row">
+                                        <input type="submit" name="" class="submit" value="Ok" ng-click="performActualCheckout()" />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="checkOutSuccessPopup" class="popup">
+                            <span class="button b-close"><span>X</span></span>
+                            <div>
+                                <div style="float:left"><img src="images/productsList/okCheck.jpg"/></div>
+                                <div style="floar:right"><h2>{{dictionary[0].checkoutSuccess}}</h2></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="right_block_for_menu">
+        <section>
+        <div id="content">
+            <div class="wrapper2">
+                <div class="container">
+                    <div class="content-indent">
+                        <div class="productdetails-view simpleCart_shelfItem">
+                            <div class="wrapper2">
+
+
+                                <div class="fright">
+                                    <div style="display:none" class="item_pid" id="productId" ng-bind="product[0].id"></div>
+                                    <h1 class="title item_name" ng-bind="product[0].name"></h1>
+                                    <div class="s_desc">
+                                        <p ng-bind="product[0].description"></p>
+                                    </div>
+                                    <div class="product-box2">
+                                        <div class="rating">
+                                            <span class="vote">
+                                                <span style="display:inline-block;" class="ratingbox">
+                                                <span class="stars-orange" style="{{product[0].ratingStyle}}"></span>
+                                            </span>
+                                            <span class="rating-title"><a href="javascript:" id="rateProduct" class="ask-a-question" ng-bind="product[0].rating == 0 | iif : dictionary[0].notRated : dictionary[0].addRate"></a></span>
+                                            <div id="rateProductPopup" class="popup">
+                                                <span class="button b-close"><span>X</span></span>
+                                                <div class="logo" ng-bind="dictionary[0].ratingLabel"></div>
+
+
+                                                    <div class="form_row">
+                                                        <label ng-bind="dictionary[0].rate"></label>
+                                                        <div class="rating">
+                                                            <span class="vote">
+                                                                <div id="ratyRating" style="width: 300px"></div>
+                                                            </span>
+                                                        </div>
+                                                        <div style="display:none" id="currentRatingScore"></div>
+                                                    </div>
+
+                                                    <div class="form_row">
+                                                        <label ng-bind="dictionary[0].opinionLabel"></label>
+                                                        <textarea id="rateOpinionText" name="rateOpinion" class="main_textarea"></textarea>
+                                                    </div>
+
+                                                    <div class="form_row">
+                                                        <input type="submit" name="" class="submit" value="Ok" ng-click="rateProduct(product[0].id)" />
+                                                    </div>
+
+                                            </div>
+                                            </span>
+                                        </div>
+                                        <div class="spacer-buy-area">
+                                            <div class="addtocart-area">
+                                                <div class="addtocart-bar">
+
+                                                    <div class="wrapper">
+                                                        <div class="controls">
+                                                            <span class="quantity-box">
+                                                                <input id="quantity1" class="quantity-input" name="quantity[]" value="1" type="text">
+                                                            </span>
+                                                            <span class="quantity-controls">
+                                                                <input class="quantity-controls quantity-plus" title='+1' type="button" ng-click="increaseProductQuantity(1)">
+                                                                <input class="quantity-controls quantity-minus" title='-1' type="button" ng-click="decreaseProductQuantity(1)">
+                                                            </span>
+                                                        </div>
+                                                        <div class="price">
+                                                            <div id="productPrice78" class="product-price">
+                                                                <div class="PricesalesPrice" style="display : block;">
+                                                                    <span ng-bind="dictionary[0].finalPrice"></span><span class="PricesalesPrice item_price" ng-bind="product[0].price">{{}} RON.</span><span class="PricesalesPrice"> RON.</span>
+                                                                </div>
+                                                                <div ng-class="{'hide': product[0].originalPrice == 0}" >
+                                                                    <span ng-bind="dictionary[0].originalPrice"></span><span  ng-class="{'PricepriceWithoutTax': product[0].originalPrice > 0}" ng-bind="product[0].originalPrice"></span><span> RON.</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="wrapper">
+                                                        <div class="fright">
+                                                            <div class="ask-a-question">
+                                                                <a href="javascript:" id="askProductQuestion" class="ask-a-question" ng-bind="dictionary[0].askProductQuestion"></a>
+                                                                <div id="askQuestionpopup" class="popup">
+                                                                    <span class="button b-close"><span>X</span></span>
+
+                                                                    <form id="askQuestionForm" data-validate="parsley">
+                                                                        <div class="form">
+                                                                            <div class="form_row">
+                                                                                <label ng-bind="dictionary[0].yourName"></label>
+                                                                                <input type="text" id="qName" data-required="true" name="name" class="main_input" />
+                                                                            </div>
+
+                                                                            <div class="form_row">
+                                                                                <label ng-bind="dictionary[0].yourEmail"></label>
+                                                                                <input type="email" id="qEmail" data-required="true" name="email" class="main_input"/>
+                                                                            </div>
+
+                                                                            <div class="form_row">
+                                                                                <label ng-bind="dictionary[0].yourPhone"></label>
+                                                                                <input type="text" id="qPhone" data-required="true" name="phone" class="main_input" />
+                                                                            </div>
+
+
+                                                                            <div class="form_row">
+                                                                                <label ng-bind="dictionary[0].question"></label>
+                                                                                <textarea type="text" id="qQuestion" data-required="true" class="main_textarea" name="question"></textarea>
+                                                                            </div>
+
+                                                                                 <input type="hidden" id="qProdId" value="{{product[0].id}}"/>
+                                                                            <div class="form_row">
+                                                                                <input type="submit" id="submitQuestionForm" class="submit" value="{{dictionary[0].send}}" ng-click="askQuestionEmail()"/>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                            <div id="mailConfirmationPopup" class="popup">
+                                                                <span class="button b-close"><span>X</span></span>
+                                                                <div style="width:450px; text-align: center; margin-top: 35px;" class="logo">{{dictionary[0].emailSuccess}}</div>
+                                                            </div>
+                                                        </div>
+                                                        <span class="addtocart-button">
+                                                            <input style="display:none;" id="addToCart1" name="" class="item_add addtocart-button cart-click" value="{{dictionary[0].addToCartLabel}}" title="{{dictionary[0].addToCartLabel}}" type="button">
+                                                            <input name="" class="addtocart-button cart-click" value="{{dictionary[0].addToCartLabel}}" title="{{dictionary[0].addToCartLabel}}" type="button" ng-click="addToCart(1)">
+                                                        </span>
+                                                    </div>
+                                                    <div class="clear"></div>
+                                                </div>
+
+                                                <div class="clear"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="clear"></div>
+                                    <div class="share">
+                                        <!-- AddThis Button BEGIN -->
+                                        <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+                                            <a class="addthis_button_preferred_1"></a>
+                                            <a class="addthis_button_preferred_2"></a>
+                                            <a class="addthis_button_preferred_3"></a>
+                                            <a class="addthis_button_preferred_4"></a>
+                                            <a class="addthis_button_compact"></a>
+                                            <a class="addthis_counter addthis_bubble_style"></a>
+                                        </div>
+                                        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-51af469300635dc8"></script>
+                                        <!-- AddThis Button END -->
+                                    </div>
+                                </div>
+
+                                <div class="fleft">
+                                        <div>
+                                            <div class="slides_container" style="display: block;">
+                                                <div class="slides_control">
+                                                    <div class="slide" style="">
+                                                        <a id="productHrefZoom" ng-href="{{product[0].mainImage}}"
+                                                           class="jqzoom"
+                                                           title="" rel="undefined" style="outline-style: none; text-decoration: none;" >
+                                                            <img class="productimage" id="productImageZoom" ng-src="{{product[0].mainImage}}" title="" style="opacity: 1;">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div style="margin:0 auto; margin-left:5px; width: 900px; height:120px;">
+                                                <a class="prev browse left"></a>
+                                                <div class="scrollable" id="scrollable">
+                                                    <div class="items">
+                                                        <div ng-repeat="imagePage in product[0].productImages" images-post-repeat-directive zoom_directive>
+                                                            <a ng-repeat="image in imagePage" href="" ng-click="changeMainProductImg(image.imageUrl)">
+                                                               <img ng-src="{{image.imageUrl}}"/>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <a class="next browse right"></a>
+                                            </div>
+
+                                        </div>
+                                </div>
+
+                                <div class="clear"></div>
+
+
+                                <div class="Fly-tabs" style="visibility: visible;">
+                                    <dl id="pane" class="tabs">
+                                        <dt class="tabd tabd_open open" id="1" style="cursor: pointer;"><span ng-bind="dictionary[0].description"></span></dt>
+                                        <dt class="tabd tabd_closed closed" id="2" style="cursor: pointer;"><span ng-bind="dictionary[0].reviews"></span></dt>
+                                        <dt class="tabd tabd_closed closed" id="3" style="cursor: pointer;"><span ng-bind="dictionary[0].fbComments"></span></dt>
+                                    </dl>
+                                    <div class="current">
+                                        <dd id="tabDesc1">
+                                            <div class="desc">
+                                                <div class="text">
+                                                    <p ng-bind="product[0].description"></p>
+                                                </div>
+                                            </div>
+                                        </dd>
+                                        <dd class="hide" id="tabDesc2">
+                                                <div class="product-box2">
+                                                    Search: <input ng-model="ratingsQuery">
+                                                    Sort by:
+                                                    <select ng-model="ratingsOrderProp">
+                                                        <option value="rateValue">Rating</option>
+                                                        <option value="date">Date</option>
+                                                    </select>
+                                                </div>
+                                                <div class="customer-reviews">
+                                                        <div class="list-reviews" style="height: 300px;">
+                                                            <div infinite-scroll='nextPage({{product[0].id}})' infinite-scroll-disabled='busy'>
+                                                                <div ng-repeat='item in items | filter:ratingsQuery:true | orderBy:ratingsOrderProp:true'>
+                                                                    <div class="comment_box">
+                                                                        <div class="rating">
+                                                                        <span class="vote">
+                                                                            <span style="display:inline-block;" class="ratingbox">
+                                                                                <span class="stars-orange" style="{{item.rateStyle}}"></span>
+                                                                            </span>
+                                                                        </span>
+                                                                            {{item.date}}
+                                                                        </div>
+                                                                        <div class="comment">
+                                                                            <b>{{dictionary[0].review}}: </b><br>{{item.opinion}}<br>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div ng-show='busy' style="display:inline-block;"><p>Loading ... <img src="images/ajax-loader.gif" width="100" height="100"></p></div>
+
+                                                                <div style='clear: both;'></div>
+                                                            </div>
+
+                                                            <div class="clear"></div>
+                                                        </div>
+                                                </div>
+                                        </dd>
+                                        <dd class="hide" id="tabDesc3">
+                                            <div>
+                                                <!--<div class="commentsOnFacebook">-->
+                                                    <!--<div id="fb-root"></div>-->
+                                                    <!--<div class="fb-comments" data-href="http://www.intello.ro" data-width="860" data-num-posts="10"></div>-->
+                                                <!--</div>-->
+                                            </div>
+                                        </dd>
+                                        <dd style="display: none;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        </section>
+    </div>
+
+<div ng-include="'views/footer.html'"></div>
+</div>
+</div>
+
+<script type="text/javascript" src="js/products/jquery.jqzoom-core-pack.js"></script>
+<script type="text/javascript" src="js/products/jquery.raty.min.js"></script>
+<script type="text/javascript" src="js/products/simpleCart.min.js"></script>
+<script type="text/javascript" src="js/products/main.js" ></script>
+<script type="text/javascript" src="js/jquery.bpopup.min.js"></script>
+<script type="text/javascript" src="js/products/jquery.tools.min.js"></script>
+<script type="text/javascript" src="js/products/productDetailsSpecific.js"></script>
+<script type="text/javascript" src="js/products/ng-infinite-scroll.min.js"></script>
+<script type="text/javascript" src="js/products/parsley-standalone.min.js"></script>
+</div> <!-- For div id="wrap"-->
+</body>
+</html>
